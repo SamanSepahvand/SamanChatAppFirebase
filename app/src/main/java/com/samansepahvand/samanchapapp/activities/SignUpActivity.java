@@ -89,6 +89,7 @@ private PreferenceManager preferenceManager;
 
                 }).addOnFailureListener(exception -> {
 
+
                     isLoading(false);
                     shoToast(exception.getMessage());
         });
