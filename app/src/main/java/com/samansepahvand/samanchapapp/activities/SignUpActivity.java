@@ -16,8 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.installations.local.PersistedInstallationEntry;
-import com.samansepahvand.samanchapapp.PreferenceManager;
+import com.samansepahvand.samanchapapp.utilities.PreferenceManager;
 import com.samansepahvand.samanchapapp.databinding.ActivitySignUpBinding;
 import com.samansepahvand.samanchapapp.utilities.Constants;
 
@@ -25,7 +24,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -108,7 +106,7 @@ private PreferenceManager preferenceManager;
         } else if (binding.inputEmail.getText().toString().trim().isEmpty()) {
             shoToast("Enter email");
             return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(binding.inputName.getText().toString()).matches()) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(binding.inputEmail.getText().toString()).matches()) {
             shoToast("Enter valid  email");
             return false;
         } else if (binding.inputPassword.getText().toString().trim().isEmpty()) {

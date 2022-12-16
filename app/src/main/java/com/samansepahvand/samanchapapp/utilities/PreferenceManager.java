@@ -1,4 +1,4 @@
-package com.samansepahvand.samanchapapp;
+package com.samansepahvand.samanchapapp.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
