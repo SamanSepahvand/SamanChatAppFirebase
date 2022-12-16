@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "661793198864",
+    "project_id": "samanchapapp-371812",
+    "storage_bucket": "samanchapapp-371812.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661793198864:android:eedf3a22b78a610b2f0b95",
+        "android_client_info": {
+          "package_name": "com.samansepahvand.samanchapapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "661793198864-0pv3o72vgib2feftj089gnk5dvnjphs0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAuUvf9akjoT63XY9IrCasbkvngm8HMiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "661793198864-0pv3o72vgib2feftj089gnk5dvnjphs0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
