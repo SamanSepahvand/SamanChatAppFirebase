@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.samansepahvand.samanchapapp.databinding.ItemContainerRecentConversionBinding;
 import com.samansepahvand.samanchapapp.databinding.ItemContainerSentMessageBinding;
 import com.samansepahvand.samanchapapp.databinding.ItemContainerUserBinding;
+import com.samansepahvand.samanchapapp.listeners.ConversionListener;
 import com.samansepahvand.samanchapapp.models.ChatMessage;
 import com.samansepahvand.samanchapapp.models.User;
 
@@ -22,8 +23,12 @@ public class RecentConversionsAdapter extends RecyclerView.Adapter<RecentConvers
 
     private List<ChatMessage> chatMessages;
 
-    public RecentConversionsAdapter( List<ChatMessage> chatMessages) {
+    private ConversionListener conversionListener;
+
+
+    public RecentConversionsAdapter( List<ChatMessage> chatMessages,ConversionListener _conversionListener) {
         this.chatMessages = chatMessages;
+        this.conversionListener=_conversionListener;
     }
 
 
@@ -62,6 +67,14 @@ public class RecentConversionsAdapter extends RecyclerView.Adapter<RecentConvers
             binding.textRecentMessage.setText(chatMessage.message);
             binding.imageProfile.setImageBitmap(getConversionImage(chatMessage.conversionImage));
 
+            binding.getRoot().setOnClickListener(view -> {
+                User user=new User();
+                user.id=chatMessage.conversionId;
+                user.name =chatMessage.conversionName;
+                user.image=chatMessage.conversionImage;
+                conversionListener.onConversionCLicked(user);
+
+            });
         }
 
 
