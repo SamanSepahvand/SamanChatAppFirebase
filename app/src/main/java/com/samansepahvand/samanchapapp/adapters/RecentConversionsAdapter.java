@@ -17,6 +17,7 @@ import com.samansepahvand.samanchapapp.listeners.ConversionListener;
 import com.samansepahvand.samanchapapp.models.ChatMessage;
 import com.samansepahvand.samanchapapp.models.User;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class RecentConversionsAdapter extends RecyclerView.Adapter<RecentConversionsAdapter.ConversionsViewHolder> {
@@ -26,16 +27,16 @@ public class RecentConversionsAdapter extends RecyclerView.Adapter<RecentConvers
     private ConversionListener conversionListener;
 
 
-    public RecentConversionsAdapter( List<ChatMessage> chatMessages,ConversionListener _conversionListener) {
+    public RecentConversionsAdapter(List<ChatMessage> chatMessages, ConversionListener _conversionListener) {
         this.chatMessages = chatMessages;
-        this.conversionListener=_conversionListener;
+        this.conversionListener = _conversionListener;
     }
 
 
     @NonNull
     @Override
     public ConversionsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new RecentConversionsAdapter.ConversionsViewHolder(ItemContainerRecentConversionBinding.inflate(
+        return new RecentConversionsAdapter.ConversionsViewHolder(ItemContainerRecentConversionBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent, false
         ));
@@ -52,7 +53,7 @@ public class RecentConversionsAdapter extends RecyclerView.Adapter<RecentConvers
     }
 
 
-    class ConversionsViewHolder  extends RecyclerView.ViewHolder {
+    class ConversionsViewHolder extends RecyclerView.ViewHolder {
 
         ItemContainerRecentConversionBinding binding;
 
@@ -66,12 +67,13 @@ public class RecentConversionsAdapter extends RecyclerView.Adapter<RecentConvers
             binding.textName.setText(chatMessage.conversionName);
             binding.textRecentMessage.setText(chatMessage.message);
             binding.imageProfile.setImageBitmap(getConversionImage(chatMessage.conversionImage));
-
+            binding.textDateMessage.setText(new SimpleDateFormat("MM/dd/yy").format(chatMessage.dataObject));
             binding.getRoot().setOnClickListener(view -> {
-                User user=new User();
-                user.id=chatMessage.conversionId;
-                user.name =chatMessage.conversionName;
-                user.image=chatMessage.conversionImage;
+                User user = new User();
+                user.id = chatMessage.conversionId;
+                user.name = chatMessage.conversionName;
+                user.image = chatMessage.conversionImage;
+
                 conversionListener.onConversionCLicked(user);
 
             });

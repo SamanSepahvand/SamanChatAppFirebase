@@ -45,6 +45,7 @@ public class Constants {
             remoteMsgHeaders.put(REMOTE_MSG_AUTHORIZATION,
                     "key=AAAAmhXy0xA:APA91bG0NR_8-RQLhAhUzj55ihBRsVxWBxo-Ts4Wm07_y81DqgkQF-SEtJCwoZFnW-G8ekDU0XX1ManTSgH3fD2Glq0bqENOnxv7P6F9UwsfB9o8lbfY0wH8NMy7GzBH6S8UOA7aohHJ"
             );
+
             remoteMsgHeaders.put(
                     REMOTE_MSG_CONTENT_TYPE,
                     "application/json"

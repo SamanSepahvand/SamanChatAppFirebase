@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,6 +71,16 @@ public class ChatActivity extends BaseActivity {
         loadReceiverDetails();
         init();
         listenMessage();
+
+        onClickSoon();
+    }
+
+    private void onClickSoon() {
+
+    binding.imageMore.setOnClickListener(view -> {showToast("Soon !");});
+        binding.imageCall.setOnClickListener(view -> {showToast("Soon !");});
+        binding.imageVideoimage.setOnClickListener(view -> {showToast("Soon !");});
+
 
     }
 
@@ -102,7 +114,14 @@ public class ChatActivity extends BaseActivity {
                     isReceiverAvailable=availability==1;
                 }
                 receiverUser.token=value.getString(Constants.KEY_FCM_TOKEN);
+                if(receiverUser.image==null){
+                    receiverUser.image=value.getString(Constants.KEY_IMAGE);
+                    chatAdapter.setReceiverProfileImage(getBitmapFromEncodedString(receiverUser.image));
+                    chatAdapter.notifyItemRangeChanged(0,chatMessages.size());
+
+                }
             }
+
             if (isReceiverAvailable){
                 binding.textAvailability.setVisibility(View.VISIBLE);
             }else{
@@ -140,8 +159,8 @@ public class ChatActivity extends BaseActivity {
         if (!isReceiverAvailable){
             try{
 
-                JSONArray  token=new JSONArray();
-                token.put(receiverUser.token);
+                JSONArray  tokens=new JSONArray();
+                tokens.put(receiverUser.token);
 
                 JSONObject  data=new JSONObject();
                 data.put(Constants.KEY_USER_ID,preferenceManager.getString(Constants.KEY_USER_ID));
@@ -151,13 +170,14 @@ public class ChatActivity extends BaseActivity {
 
                 JSONObject  body=new JSONObject();
                 body.put(Constants.REMOTE_MSG_DATA,data);
-                body.put(Constants.REMOTE_MSG_REGISTRATION_IDS,token);
+                body.put(Constants.REMOTE_MSG_REGISTRATION_IDS,tokens);
 
                 sendNotification(body.toString());
 
 
             }catch (Exception e){
                 e.printStackTrace();
+                showToast(e.getMessage());
             }
         }
         binding.inputMessage.setText(null);
@@ -169,15 +189,27 @@ public class ChatActivity extends BaseActivity {
 
 
     private Bitmap getBitmapFromEncodedString(String encodeImage) {
-        byte[] bytes = Base64.decode(encodeImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+        if (encodeImage!=null) {
+            byte[] bytes = Base64.decode(encodeImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }else{
+            return null;
+        }
     }
 
     private void loadReceiverDetails() {
         receiverUser = (User) getIntent().getSerializableExtra(Constants.KEY_USER);
         binding.textName.setText(receiverUser.name);
 
+        byte[] bytes = Base64.decode(receiverUser.image, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        binding.imageProfile.setImageBitmap(bitmap);
+
+
     }
+
+
 
     private void setListener() {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
@@ -309,7 +341,7 @@ public class ChatActivity extends BaseActivity {
                 messageBody
         ).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(@Nullable Call<String> call,@Nullable  Response<String> response) {
 
                 if (response.isSuccessful()){
                     try{
@@ -333,7 +365,7 @@ public class ChatActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(@Nullable  Call<String> call,@Nullable  Throwable t) {
                 showToast("onFailure:"+t.getMessage());
             }
         });

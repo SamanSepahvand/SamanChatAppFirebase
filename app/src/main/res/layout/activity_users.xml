@@ -16,8 +16,7 @@
         android:layout_marginLeft="@dimen/_16sdp"
         android:layout_marginStart="@dimen/_16sdp"
         android:background="@drawable/background_icon"
-        android:padding="@dimen/_6sdp"
-        android:src="@drawable/ic_back"
+        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
         android:tint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +45,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgBack"
         android:background="@drawable/background_content_bottom"

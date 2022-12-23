@@ -19,39 +19,72 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/primary"
         app:layout_constraintBottom_toTopOf="@id/viewSupporter"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
         android:id="@+id/imageBack"
+        android:layout_width="@dimen/_26sdp"
+        android:layout_height="@dimen/_26sdp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="@dimen/_12sdp"
-        android:layout_marginLeft="@dimen/_16sdp"
-        android:layout_marginRight="@dimen/_16sdp"
         android:paddingEnd="@dimen/_4sdp"
-        android:src="@drawable/ic_back"
-        android:tint="@color/white"
+        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
 
+        android:tint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageVideoimage"
+        android:layout_width="@dimen/_26sdp"
+        android:layout_height="@dimen/_26sdp"
+        android:layout_marginEnd="3dp"
+        android:paddingEnd="@dimen/_4sdp"
+        android:src="@drawable/ic_round_videocam_24"
+        android:tint="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/imageCall"
+        app:layout_constraintTop_toTopOf="@+id/imageCall" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageCall"
+        android:layout_width="@dimen/_26sdp"
+        android:layout_height="@dimen/_26sdp"
+        android:layout_marginEnd="3dp"
+        android:paddingEnd="@dimen/_4sdp"
+        android:src="@drawable/ic_round_call_24"
+        android:tint="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/imageMore"
+        app:layout_constraintTop_toTopOf="@+id/imageMore" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageMore"
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
-        android:id="@+id/imageInfo"
         android:layout_marginTop="@dimen/_12sdp"
-        android:layout_marginLeft="@dimen/_16sdp"
-        android:layout_marginRight="@dimen/_16sdp"
         android:paddingEnd="@dimen/_4sdp"
+        android:src="@drawable/ic_baseline_more_vert_24"
         android:tint="@color/white"
-        android:src="@drawable/ic_baseline_info_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageProfile"
+        android:layout_width="@dimen/_34sdp"
+        android:layout_height="@dimen/_34sdp"
+        android:background="@drawable/background_icon"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/textName"
+        app:layout_constraintStart_toEndOf="@+id/imageBack"
+        app:layout_constraintTop_toTopOf="@+id/textName"
+        app:riv_corner_radius="@dimen/_15sdp" />
 
 
     <TextView
@@ -59,18 +92,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:gravity="center"
+        android:gravity="left"
+        android:layout_marginLeft="@dimen/_8sdp"
         android:maxLines="1"
         android:textColor="@color/white"
-        android:textSize="@dimen/_14ssp"
+        android:textSize="@dimen/_16ssp"
         android:textStyle="bold"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="@id/imageBack"
-        app:layout_constraintEnd_toStartOf="@id/imageInfo"
-        app:layout_constraintStart_toEndOf="@id/imageBack"
-        app:layout_constraintTop_toTopOf="@id/imageBack"
-        />
+        app:layout_constraintEnd_toStartOf="@+id/imageVideoimage"
+        app:layout_constraintStart_toEndOf="@+id/imageProfile"
+        app:layout_constraintTop_toTopOf="@id/imageBack" />
 
     <View
         android:id="@+id/viewSupporter"
@@ -144,12 +175,17 @@ app:layout_constraintBottom_toBottomOf="@id/viewBackground"
         android:background="@drawable/background_chat_input"
         android:hint="type a message"
         android:imeOptions="actionDone"
+        android:drawableEnd="@drawable/ic_round_attach_file_24"
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingStart="@dimen/_16sdp"
+        android:drawablePadding="3dp"
+        android:drawableStart="@drawable/ic_baseline_insert_emoticon_24"
         android:paddingEnd="@dimen/_16sdp"
+        android:textColorHint="@color/white"
         android:textColor="@color/white"
-        android:textColorHighlight="@color/white"
+        android:lines="4"
+        android:textColorHighlight="@color/primaryLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/layoutSend"
         app:layout_constraintStart_toStartOf="parent"/>

@@ -73,8 +73,18 @@ public class MainActivity extends BaseActivity  implements ConversionListener {
         binding.fabNewChat.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), UsersActivity.class));
         });
-    }
 
+
+
+        binding.imageMore.setOnClickListener(view -> {showToast("Soon !");});
+        binding.imageSearch.setOnClickListener(view -> {showToast("Soon !");});
+        binding.textTitle.setOnClickListener(view -> {showToast("Hi "+preferenceManager.getString(Constants.KEY_NAME));});
+
+
+    }
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), ""+message, Toast.LENGTH_SHORT).show();
+    }
     private void loadUserDetails() {
 
         binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
@@ -104,6 +114,7 @@ public class MainActivity extends BaseActivity  implements ConversionListener {
         if (value != null) {
             for (DocumentChange documentChange : value.getDocumentChanges()) {
                 if (documentChange.getType() == DocumentChange.Type.ADDED) {
+
                     String senderId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
                     String receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
 
@@ -196,10 +207,13 @@ public class MainActivity extends BaseActivity  implements ConversionListener {
 
     @Override
     public void onConversionCLicked(User user) {
+
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
         intent.putExtra(Constants.KEY_USER, user);
         startActivity(intent);
+
     }
+
 }
 
 
