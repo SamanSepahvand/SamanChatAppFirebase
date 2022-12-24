@@ -21,6 +21,24 @@
         app:riv_oval="true" />
 
 
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_12sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintWidth_max="wrap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8"/>
+
+
     <TextView
         android:id="@+id/textMessage"
         android:layout_width="0dp"

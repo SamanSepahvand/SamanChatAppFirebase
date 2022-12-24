@@ -163,7 +163,7 @@ app:layout_constraintBottom_toBottomOf="@id/viewBackground"
 
     </FrameLayout>
 
-    <EditText
+    <com.samansepahvand.samanchapapp.customView.CustomEditText
         android:id="@+id/inputMessage"
         android:layout_width="0dp"
         android:layout_height="@dimen/_40sdp"
@@ -175,12 +175,12 @@ app:layout_constraintBottom_toBottomOf="@id/viewBackground"
         android:background="@drawable/background_chat_input"
         android:hint="type a message"
         android:imeOptions="actionDone"
-        android:drawableEnd="@drawable/ic_round_attach_file_24"
+        android:drawableRight="@drawable/ic_round_attach_file_24"
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingStart="@dimen/_16sdp"
         android:drawablePadding="3dp"
-        android:drawableStart="@drawable/ic_baseline_insert_emoticon_24"
+        android:drawableLeft="@drawable/ic_baseline_insert_emoticon_24"
         android:paddingEnd="@dimen/_16sdp"
         android:textColorHint="@color/white"
         android:textColor="@color/white"

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -96,9 +97,20 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void setData(ChatMessage chatMessage) {
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);
-
+            if (chatMessage.imageMessage!=null){
+                binding.imageMessage.setVisibility(View.VISIBLE);
+                binding.imageMessage.setImageBitmap(getBitmapFromEncodedString(chatMessage.imageMessage));
+            }
         }
+        private Bitmap getBitmapFromEncodedString(String encodeImage) {
 
+            if (encodeImage != null) {
+                byte[] bytes = Base64.decode(encodeImage, Base64.DEFAULT);
+                return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            } else {
+                return null;
+            }
+        }
     }
 
     static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
@@ -118,8 +130,22 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (receiverProfileImage!=null){
                 binding.imageProfile.setImageBitmap(receiverProfileImage);
             }
-        }
 
+            if (chatMessage.imageMessage!=null){
+                binding.imageMessage.setVisibility(View.VISIBLE);
+                binding.imageMessage.setImageBitmap(getBitmapFromEncodedString(chatMessage.imageMessage));
+            }
+
+        }
+        private Bitmap getBitmapFromEncodedString(String encodeImage) {
+
+            if (encodeImage != null) {
+                byte[] bytes = Base64.decode(encodeImage, Base64.DEFAULT);
+                return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            } else {
+                return null;
+            }
+        }
     }
 
 

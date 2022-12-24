@@ -148,7 +148,6 @@ private PreferenceManager preferenceManager;
         return Base64.encodeToString(bytes, Base64.DEFAULT);
 
     }
-
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
 
         if (result.getResultCode() == RESULT_OK) {
@@ -168,4 +167,7 @@ private PreferenceManager preferenceManager;
 
 
     });
+
+
+
 }
