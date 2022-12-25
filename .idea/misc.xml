@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/drawable/background_sent_message.xml" value="0.3490740740740741" />
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.30104166666666665" />
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/drawable/ic_baseline_more_vert_24_white.xml" value="0.30104166666666665" />
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.30104166666666665" />
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/drawable/ic_baseline_star_24.xml" value="0.30104166666666665" />
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/drawable/ic_baseline_star_border_24.xml" value="0.30104166666666665" />
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/layout/dialog_image_message.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/layout/dialog_show_image_chat.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/layout/item_container_received_message.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/s.sepahvand/AndroidStudioProjects/SamanChatAppFirebase/app/src/main/res/layout/item_container_sent_message.xml" value="0.2128623188405797" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/drawable-v24/background_chat_input.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/drawable-v24/background_content_top.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/drawable-v24/background_image.xml" value="0.1648148148148148" />
@@ -13,18 +23,16 @@
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/drawable/ic_log_out.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/activity_chat.xml" value="0.1921875" />
-        <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/activity_main.xml" value="0.178125" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/activity_maps.xml" value="0.1921875" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/activity_sign_in.xml" value="0.1921875" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/activity_sign_up.xml" value="0.1921875" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/activity_users.xml" value="0.178125" />
-        <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/dialog_image_message.xml" value="0.1921875" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/item_container_received_message.xml" value="0.1921875" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/item_container_recent_conversion.xml" value="0.1921875" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/item_container_send_message.xml" value="0.1921875" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/item_container_sent_message.xml" value="0.1921875" />
         <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/layout/item_container_user.xml" value="0.11197916666666667" />
-        <entry key="..\:/Users/shant/AndroidStudioProjects/SamanChapApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.20833333333333334" />
       </map>
     </option>
   </component>

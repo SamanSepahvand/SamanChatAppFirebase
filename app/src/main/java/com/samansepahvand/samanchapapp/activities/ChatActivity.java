@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
@@ -24,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,9 +39,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.samansepahvand.samanchapapp.R;
 import com.samansepahvand.samanchapapp.adapters.ChatAdapter;
+import com.samansepahvand.samanchapapp.customView.ShowImageDialog;
 import com.samansepahvand.samanchapapp.databinding.ActivityChatBinding;
 import com.samansepahvand.samanchapapp.dialog.DialogPrevImageMessage;
 import com.samansepahvand.samanchapapp.listeners.DrawableClickListener;
+import com.samansepahvand.samanchapapp.metamodel.PhotoViewMetaModel;
 import com.samansepahvand.samanchapapp.models.ChatMessage;
 import com.samansepahvand.samanchapapp.models.User;
 import com.samansepahvand.samanchapapp.network.ApiClient;
@@ -54,6 +58,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,11 +75,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChatActivity extends BaseActivity {
+public class ChatActivity extends BaseActivity implements ChatAdapter.IGetPhotoInfo {
 
 
     private static final int PERMISSION_REQUEST_CODE = 202;
     private static final int PICK_IMAGE_MULTIPLE = 100;
+
     private ActivityChatBinding binding;
     private User receiverUser;
     private List<ChatMessage> chatMessages;
@@ -89,6 +95,20 @@ public class ChatActivity extends BaseActivity {
     private ChatMessage imageChatMessage=new ChatMessage();
 
 
+
+    //// new Image
+
+    private Bitmap bitmap;
+
+    private String imageEncoded;
+    private List<String> imagesEncodedList;
+    private ArrayList<Uri> mArrayUri = new ArrayList();
+
+    public static final int GALLERY_PICTURE = 1;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +121,9 @@ public class ChatActivity extends BaseActivity {
         listenMessage();
 
         onClickSoon();
-
+        if (!checkPermission()) {
+            requestPermission();
+        }
 
     }
 
@@ -125,9 +147,11 @@ public class ChatActivity extends BaseActivity {
                     case RIGHT:
                         //Do something here
                         showToast("Soon !");
-                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        pickImage.launch(intent);
+//                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                        pickImage.launch(intent);
+
+
 
                         break;
 
@@ -138,9 +162,16 @@ public class ChatActivity extends BaseActivity {
         });
         binding.inputMessage.setOnLongClickListener(view -> {
 
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            pickImage.launch(intent);
+//            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            pickImage.launch(intent);
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
+
             return  false;
         });
     }
@@ -151,7 +182,7 @@ public class ChatActivity extends BaseActivity {
     private void init() {
         preferenceManager = new PreferenceManager(getApplicationContext());
         chatMessages = new ArrayList<>();
-        chatAdapter = new ChatAdapter(
+        chatAdapter = new ChatAdapter(this,this,
                 chatMessages,
                 getBitmapFromEncodedString(receiverUser.image),
                 preferenceManager.getString(Constants.KEY_USER_ID)
@@ -441,15 +472,30 @@ public class ChatActivity extends BaseActivity {
 
 
     private String encodeImage(Bitmap bitmap) {
-        int previewWidth = 150;
+        int previewWidth = bitmap.getWidth();
         int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
         Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] bytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
 
     }
+
+    public String getBase64Image(Bitmap bitmap) {
+        try {
+            ByteBuffer buffer =
+                    ByteBuffer.allocate(bitmap.getRowBytes() *
+                            bitmap.getHeight());
+            bitmap.copyPixelsToBuffer(buffer);
+            byte[] bytes = buffer.array();
+            return Base64.encodeToString(bytes, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
 
         if (result.getResultCode() == RESULT_OK) {
@@ -462,16 +508,15 @@ public class ChatActivity extends BaseActivity {
                     encodeImage = encodeImage(bitmap);
                     imageChatMessage.imageMessage=encodeImage;
 
-                    DialogPrevImageMessage dialog =new DialogPrevImageMessage(this,imageChatMessage);
-
-                    dialog.setAcceptButton(new DialogPrevImageMessage.OnAcceptInterface() {
-                        @Override
-                        public void accept(ChatMessage chatMessage) {
-                            imageChatMessage.message=  chatMessage.message;
-                            sendMessage();
-                        }
-                    });
-                    dialog.show();
+//                    DialogPrevImageMessage dialog =new DialogPrevImageMessage(this,imageChatMessage);
+//                    dialog.setAcceptButton(new DialogPrevImageMessage.OnAcceptInterface() {
+//                        @Override
+//                        public void accept(ChatMessage chatMessage) {
+//                            imageChatMessage.message=  chatMessage.message;
+//                            sendMessage();
+//                        }
+//                    });
+//                    dialog.show();
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -482,6 +527,200 @@ public class ChatActivity extends BaseActivity {
 
     });
 
+
+    @Override
+    public void ShowDialogImage(PhotoViewMetaModel photoViewMetaModel) {
+
+        ShowImageDialog showImageDialog=    new ShowImageDialog((Activity) this,photoViewMetaModel );
+        showImageDialog.show();
+
+
+
+    }
+
+
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        int result3 = ContextCompat.checkSelfPermission(getApplicationContext(), MANAGE_EXTERNAL_STORAGE);
+
+        return (result == PackageManager.PERMISSION_GRANTED) && result2 == PackageManager.PERMISSION_GRANTED && result3 == PackageManager.PERMISSION_GRANTED;
+
+    }
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(this, new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        try {
+            // When an Image is picked
+            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
+                    && null != data) {
+                // Get the Image from data
+
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                imagesEncodedList = new ArrayList<String>();
+                if (data.getData() != null) {
+
+                    Uri mImageUri = data.getData();
+
+                    // Get the cursor
+                    Cursor cursor = getContentResolver().query(mImageUri,
+                            filePathColumn, null, null, null);
+                    // Move to first row
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imageEncoded = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    bitmap = BitmapFactory.decodeFile(imageEncoded);
+
+                    //bitmap have image Url
+
+                    mArrayUri.add(mImageUri);
+
+                } else {
+                    if (data.getClipData() != null) {
+                        ClipData mClipData = data.getClipData();
+
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+
+                            ClipData.Item item = mClipData.getItemAt(i);
+                            Uri uri = item.getUri();
+                            mArrayUri.add(uri);
+                            // Get the cursor
+                            Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+                            // Move to first row
+                            cursor.moveToFirst();
+
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            imageEncoded = cursor.getString(columnIndex);
+                            imagesEncodedList.add(imageEncoded);
+                            cursor.close();
+
+                        }
+                    }
+                }
+
+
+                bitmap=  bitmapList(mArrayUri).get(0);
+
+               encodeImage = encodeImage(bitmap);
+              //  encodeImage = getBase64Image(bitmap);
+
+                imageChatMessage.imageMessage=encodeImage;
+
+                DialogPrevImageMessage dialog =new DialogPrevImageMessage(this,imageChatMessage,bitmap);
+                dialog.setAcceptButton(new DialogPrevImageMessage.OnAcceptInterface() {
+                    @Override
+                    public void accept(ChatMessage chatMessage) {
+                        imageChatMessage.message=  chatMessage.message;
+                        sendMessage();
+                    }
+                });
+                dialog.show();
+
+
+
+            } else {
+                Toast.makeText(this, "You haven't picked Image",
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
+            Log.e("TAG", "onActivityResult: "+e.getMessage() );
+        }
+
+
+    }
+    private List<Bitmap> bitmapList(ArrayList<Uri> mArrayUri) {
+        try {
+            List<Bitmap> result=new ArrayList<>();
+
+            for (Uri imageUri : mArrayUri) {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                result.add(bitmap);
+            }
+            return  result;
+        }catch ( Exception e){
+            return  null;
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0) {
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted) {
+                    } else {
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)
+
+                            ) {
+                                showMessageOKCancel("دسترسی تایید نشد! شما اجازه استفاده از سایر قسمت های سیستم را نداری  ",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    requestPermissions(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, MANAGE_EXTERNAL_STORAGE},
+                                                            PERMISSION_REQUEST_CODE);
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+
+                    }
+                }
+
+
+                break;
+        }
+    }
+
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/iran_sans.ttf");
+        TextView content = new TextView(this);
+        content.setText("برای استفاده از سایر امکانات  برنامه به دسترسی ها نیاز داریم!");
+        content.setTypeface(face);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("درخواست دسترسی");
+        alertDialogBuilder.setIcon(R.mipmap.ic_launcher);
+        alertDialogBuilder.setView(content);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("تایید", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                requestPermission();
+            }
+        });
+        alertDialogBuilder.setNeutralButton("انصراف", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+    }
 
 
 

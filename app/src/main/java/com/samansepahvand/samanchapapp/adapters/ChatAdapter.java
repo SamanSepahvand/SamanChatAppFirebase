@@ -1,5 +1,7 @@
 package com.samansepahvand.samanchapapp.adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -10,15 +12,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.samansepahvand.samanchapapp.customView.ShowImageDialog;
 import com.samansepahvand.samanchapapp.databinding.ItemContainerReceivedMessageBinding;
 import com.samansepahvand.samanchapapp.databinding.ItemContainerSentMessageBinding;
 import com.samansepahvand.samanchapapp.databinding.ItemContainerUserBinding;
 import com.samansepahvand.samanchapapp.listeners.UserListener;
+import com.samansepahvand.samanchapapp.metamodel.PhotoViewMetaModel;
 import com.samansepahvand.samanchapapp.models.ChatMessage;
 import com.samansepahvand.samanchapapp.models.User;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -30,15 +36,22 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int VIEW_TYPE_SENT=1;
     public static final int VIEW_TYPE_RECEIVED=2;
 
+    public Context context;
+
 
     public void setReceiverProfileImage(Bitmap bitmap){
         receiverProfileImage=bitmap;
 
     }
-    public ChatAdapter(List<ChatMessage> chatMessages, Bitmap receiverProfileImage, String senderId) {
+
+    public IGetPhotoInfo iGetPhotoInfo;
+
+    public ChatAdapter(Context context,IGetPhotoInfo info,List<ChatMessage> chatMessages, Bitmap receiverProfileImage, String senderId) {
         this.chatMessages = chatMessages;
         this.receiverProfileImage = receiverProfileImage;
         this.senderId = senderId;
+        this.context=context;
+        this.iGetPhotoInfo=info;
     }
 
     @NonNull
@@ -85,7 +98,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    static class SentMessageViewHolder extends RecyclerView.ViewHolder {
+     class SentMessageViewHolder extends RecyclerView.ViewHolder {
         ItemContainerSentMessageBinding binding;
 
         public SentMessageViewHolder(ItemContainerSentMessageBinding itemContainerSentMessageBinding) {
@@ -100,7 +113,26 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (chatMessage.imageMessage!=null){
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.imageMessage.setImageBitmap(getBitmapFromEncodedString(chatMessage.imageMessage));
+                if (chatMessage.message==null){
+                    binding.textMessage.setVisibility(View.GONE);
+                }
             }
+
+
+
+            binding.imageMessage.setOnClickListener(view -> {
+                PhotoViewMetaModel model =new PhotoViewMetaModel();
+
+                model.setTitle(chatMessage.message);
+                model.setDescription(chatMessage.message);
+                model.setDate(chatMessage.dataObject.toString());
+                model.setImageUrl(chatMessage.imageMessage);
+
+                iGetPhotoInfo.ShowDialogImage(model);
+
+
+            });
+
         }
         private Bitmap getBitmapFromEncodedString(String encodeImage) {
 
@@ -113,12 +145,13 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
+     class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
         ItemContainerReceivedMessageBinding binding;
 
         public ReceivedMessageViewHolder(ItemContainerReceivedMessageBinding itemContainerReceivedMessageBinding) {
             super(itemContainerReceivedMessageBinding.getRoot());
             binding = itemContainerReceivedMessageBinding;
+
 
         }
 
@@ -134,7 +167,27 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (chatMessage.imageMessage!=null){
                 binding.imageMessage.setVisibility(View.VISIBLE);
                 binding.imageMessage.setImageBitmap(getBitmapFromEncodedString(chatMessage.imageMessage));
+                if (chatMessage.message==null){
+                    binding.textMessage.setVisibility(View.GONE);
+                }
             }
+
+
+
+
+            binding.imageMessage.setOnClickListener(view -> {
+                PhotoViewMetaModel model =new PhotoViewMetaModel();
+
+                model.setTitle(chatMessage.message);
+                model.setDescription(chatMessage.message);
+                model.setDate(chatMessage.dataObject.toString());
+                model.setImageUrl(chatMessage.imageMessage);
+
+                iGetPhotoInfo.ShowDialogImage(model);
+
+
+            });
+
 
         }
         private Bitmap getBitmapFromEncodedString(String encodeImage) {
@@ -148,5 +201,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    public interface IGetPhotoInfo{
+        void ShowDialogImage(PhotoViewMetaModel photoViewMetaModel );
+    }
 
 }

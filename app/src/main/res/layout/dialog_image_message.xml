@@ -99,14 +99,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:minHeight="@dimen/_250sdp"
-        android:orientation="vertical"
-        android:overScrollMode="never"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
 
-        android:padding="@dimen/_20sdp"
         android:src="@drawable/ic_baseline_crop_24"
         app:layout_constraintBottom_toBottomOf="@id/viewBackground"
         app:layout_constraintEnd_toEndOf="@+id/viewBackground"

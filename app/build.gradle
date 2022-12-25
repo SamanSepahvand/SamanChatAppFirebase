@@ -64,15 +64,20 @@ dependencies {
 
 
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
 
 
+
     ///retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+
+    //photoView
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
 
 }

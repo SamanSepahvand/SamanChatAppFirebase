@@ -12,7 +12,10 @@ import android.graphics.drawable.ColorDrawable;
 
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +27,8 @@ import androidx.annotation.NonNull;
 
 import com.samansepahvand.samanchapapp.R;
 import com.samansepahvand.samanchapapp.models.ChatMessage;
+
+import java.nio.ByteBuffer;
 
 
 public class DialogPrevImageMessage extends Dialog implements View.OnClickListener {
@@ -40,11 +45,24 @@ private ImageView imgMessage;
 
     private EditText edtCaption;
 
-    public DialogPrevImageMessage(@NonNull Context context,ChatMessage chatMessage ) {
+    private Bitmap bitmap;
+
+    public DialogPrevImageMessage(@NonNull Context context,ChatMessage chatMessage,Bitmap bitmap) {
         super(context);
         this.mContext = context;
         setContentView(R.layout.dialog_image_message);
-      //  this.getWindow().getAttributes().windowAnimations = R.style.AlertDialogAnimation;
+        Window window = getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+        window.setAttributes(wlp);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+this.bitmap=bitmap;
+
+
+        //  this.getWindow().getAttributes().windowAnimations = R.style.AlertDialogAnimation;
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         this.chatMessage=chatMessage;
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         initView();
@@ -67,6 +85,7 @@ edtCaption=findViewById(R.id.inputMessage);
 
         try {
             imgMessage.setImageBitmap(getBitmapFromEncodedString(chatMessage.imageMessage));
+           // imgMessage.setImageBitmap(bitmap);
 
         }catch (Exception e){
             e.printStackTrace();
