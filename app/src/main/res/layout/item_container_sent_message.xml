@@ -24,6 +24,7 @@
             android:layout_margin="@dimen/_2sdp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_max="wrap"
@@ -45,7 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageMessage"
             app:layout_constraintWidth_max="wrap"
-            app:layout_constraintWidth_percent="0.8" />
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
