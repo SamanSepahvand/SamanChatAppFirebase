@@ -30,11 +30,13 @@ public class UsersActivity extends BaseActivity implements UserListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityUsersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListener();
         getUser();
+
     }
 
     private void setListener() {
