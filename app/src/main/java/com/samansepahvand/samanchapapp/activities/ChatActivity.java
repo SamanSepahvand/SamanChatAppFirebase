@@ -6,7 +6,6 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -42,7 +41,6 @@ import com.samansepahvand.samanchapapp.adapters.ChatAdapter;
 import com.samansepahvand.samanchapapp.customView.ShowImageDialog;
 import com.samansepahvand.samanchapapp.databinding.ActivityChatBinding;
 import com.samansepahvand.samanchapapp.dialog.DialogPrevImageMessage;
-import com.samansepahvand.samanchapapp.listeners.DrawableClickListener;
 import com.samansepahvand.samanchapapp.metamodel.PhotoViewMetaModel;
 import com.samansepahvand.samanchapapp.models.ChatMessage;
 import com.samansepahvand.samanchapapp.models.User;
@@ -61,7 +59,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -139,40 +136,13 @@ public class ChatActivity extends BaseActivity implements ChatAdapter.IGetPhotoI
             showToast("Soon !");
         });
 
-        binding.inputMessage.setDrawableClickListener(new DrawableClickListener() {
-            @Override
-            public void onClick(DrawablePosition target) {
 
-                switch (target) {
-                    case RIGHT:
-                        //Do something here
-                        showToast("Soon !");
-//                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                        pickImage.launch(intent);
-
-
-
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-        });
-        binding.inputMessage.setOnLongClickListener(view -> {
-
-//            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            pickImage.launch(intent);
-
+        binding.imgAttach.setOnClickListener(view -> {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
-
-            return  false;
         });
     }
 

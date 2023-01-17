@@ -7,8 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.samansepahvand.samanchapapp.listeners.DrawableClickListener;
-
 public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     private Drawable drawableRight;
@@ -18,7 +16,6 @@ public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText 
 
     int actionX, actionY;
 
-    private DrawableClickListener clickListener;
 
     public CustomEditText (Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -65,13 +62,13 @@ public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText 
             actionY = (int) event.getY();
             if (drawableBottom != null
                     && drawableBottom.getBounds().contains(actionX, actionY)) {
-                clickListener.onClick(DrawableClickListener.DrawablePosition.BOTTOM);
+
                 return super.onTouchEvent(event);
             }
 
             if (drawableTop != null
                     && drawableTop.getBounds().contains(actionX, actionY)) {
-                clickListener.onClick(DrawableClickListener.DrawablePosition.TOP);
+
                 return super.onTouchEvent(event);
             }
 
@@ -102,13 +99,12 @@ public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText 
                     }
                 }
 
-                if (bounds.contains(x, y) && clickListener != null) {
-                    clickListener
-                            .onClick(DrawableClickListener.DrawablePosition.LEFT);
-                    event.setAction(MotionEvent.ACTION_CANCEL);
-                    return false;
-
-                }
+//                if (bounds.contains(x, y) && clickListener != null) {
+//
+//                    event.setAction(MotionEvent.ACTION_CANCEL);
+//                    return false;
+//
+//                }
             }
 
             if (drawableRight != null) {
@@ -153,12 +149,12 @@ public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText 
                     y = actionY;
 
                 /**If drawble bounds contains the x and y points then move ahead.*/
-                if (bounds.contains(x, y) && clickListener != null) {
-                    clickListener
-                            .onClick(DrawableClickListener.DrawablePosition.RIGHT);
-                    event.setAction(MotionEvent.ACTION_CANCEL);
-                    return false;
-                }
+//                if (bounds.contains(x, y) && clickListener != null) {
+//                    clickListener
+//                            .onClick(DrawableClickListener.DrawablePosition.RIGHT);
+//                    event.setAction(MotionEvent.ACTION_CANCEL);
+//                    return false;
+//                }
                 return super.onTouchEvent(event);
             }
 
@@ -175,8 +171,6 @@ public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText 
         super.finalize();
     }
 
-    public void setDrawableClickListener(DrawableClickListener listener) {
-        this.clickListener = listener;
-    }
+ 
 
 }

@@ -163,7 +163,7 @@ app:layout_constraintBottom_toBottomOf="@id/viewBackground"
 
     </FrameLayout>
 
-    <com.samansepahvand.samanchapapp.customView.CustomEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/inputMessage"
         android:layout_width="0dp"
         android:layout_height="@dimen/_40sdp"
@@ -175,7 +175,7 @@ app:layout_constraintBottom_toBottomOf="@id/viewBackground"
         android:background="@drawable/background_chat_input"
         android:hint="type a message"
         android:imeOptions="actionDone"
-        android:drawableRight="@drawable/ic_round_attach_file_24"
+
         android:importantForAutofill="no"
         android:inputType="text"
         android:paddingStart="@dimen/_16sdp"
@@ -205,5 +205,14 @@ app:layout_constraintBottom_toBottomOf="@id/viewBackground"
         app:layout_constraintTop_toBottomOf="@id/viewSupporter"/>
 
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgAttach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_round_attach_file_24"
+        app:layout_constraintBottom_toBottomOf="@+id/inputMessage"
+        app:layout_constraintEnd_toEndOf="@+id/inputMessage"
+        app:layout_constraintTop_toTopOf="@+id/inputMessage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
